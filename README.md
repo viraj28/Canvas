@@ -1,7 +1,7 @@
 # Canvas
 HTML5 canvas, implementing Javascript animations on the canvas.
 
-Head over to <a target='_blank'>https://viraj28.github.io/Canvas/</a> to see the canvas result. 
+Head over to <a href="https://viraj28.github.io/Canvas/" target="_blank">Here</a> to see the canvas result. 
 
 <b>Why?</b><br>
 Well, With this we can create kick-ass visuals.
@@ -18,4 +18,4 @@ The canvas in this repo covers all these skills and also some of the Object-Orie
 <b>If you wanna learn more about this then you can head over to the followng youtube channel called 'Chris courses'.<b>
 
 <br>This is a playlist available on the channel<br>
-<a>https://youtu.be/EO6OkltgudE</a>
+<a href="https://youtu.be/EO6OkltgudE" target="_blank">A cool Playlist by Chris Courses.</a>
