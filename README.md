@@ -1,2 +1,2 @@
 # Canvas
-HTML canvas, implementing Javascrit animations on the canvas.
+HTML canvas, implementing Javascript animations on the canvas.
