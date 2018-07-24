@@ -58,7 +58,7 @@ var mouse = {
 	x : undefined,
 	y : undefined
 }
-window.addEventListener('mousemove',
+window.addEventListener('mousemove touchmove',
 	function(event){
 		mouse.x = event.x;
 		mouse.y = event.y;
