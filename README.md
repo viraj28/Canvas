@@ -1,7 +1,7 @@
 # Canvas
 HTML5 canvas, implementing Javascript animations on the canvas.
 
-Head over to <a target='#'>https://viraj28.github.io/Canvas/</a> to see the canvas result. 
+Head over to <a target='_blank'>https://viraj28.github.io/Canvas/</a> to see the canvas result. 
 
 <b>Why?</b><br>
 Well, With this we can create kick-ass visuals.
