@@ -1,169 +1,127 @@
-// RESIZING THE CANVAS
-var canvas = document.querySelector('canvas');
+const canvas = document.getElementById('myCanvas')
+const c = canvas.getContext('2d')
 
-canvas.width = window.innerWidth;
+let mouseX
+let mouseY
 
-canvas.height = window.innerHeight;
+canvas.height = window.innerHeight
+canvas.width = window.innerWidth
 
+const canvasWidth = canvas.width
+const canvasHeight = canvas.height
 
+const maxRadius = 35
 
-// CONTEXT
-var c = canvas.getContext('2d');
-
-
-// Line.
-
-// c.beginPath();
-// c.moveTo(50,300);
-// c.lineTo(300,100);
-// c.strokeStyle = 'Red';
-// c.stroke();
-
-//A rectangle.
-// c.fillStyle = 'rgba(0,255,0,0.8)';
-// c.fillRect(100,100,100,100);
-
-//An Arc.
-// c.beginPath();
-// c.arc(300,300,30,0,Math.PI * 2,false);
-// c.strokeStyle = 'blue';
-// c.stroke();
-
-// for (var i = 0; i < 100; i++){
-// 	var x = Math.random() * window.innerWidth;
-// 	var y = Math.random() * window.innerHeight;
-	
-// 	c.beginPath();
-// 	c.arc(x,y,30,0,Math.PI * 2,false);
-// 	c.strokeStyle = '#' + Math.floor(Math.random() * 16777215).toString(16);
-// 	c.fillStyle = '#' + Math.floor(Math.random() * 16777215).toString(16);
-// 	c.fill();
-// 	c.stroke();
-
-// }
-
-
-//EVENT LISTENER FOR SCREEN RESIZE
-
-window.addEventListener('resize',function(){
-	canvas.width = window.innerWidth;
-
-	canvas.height = window.innerHeight;
-
-	init();
-});
-
-//EVENT LISTENER FOR MOUSE MOVEMENT CHECK
-var mouse = {
-	x : undefined,
-	y : undefined
-}
-window.addEventListener('mousemove touchmove',
-	function(event){
-		mouse.x = event.x;
-		mouse.y = event.y;
-		console.log(mouse);
-	});
-
-
-
-var minRadius = 2;
-var maxRadius = 40;
-
-//Circle class
-function Circle(x, y, dx ,dy, radius,colour){
-
-	this.x = x;
-	this.y = y;
-
-	this.dx = dx;
-	this.dy = dy;
-	this.ogRadius = radius;
-	this.radius = radius;
-	this.colour = colour; 
-	this.draw = function(){
-		c.beginPath();
-		c.arc(this.x,this.y,this.radius,0,Math.PI * 2,false);
-		//c.strokeStyle = 'red';
-		c.fillStyle = this.colour;
-		c.fill();
-		c.stroke();
-	}
-
-	this.update = function(){
-
-		this.draw();
-
-		if(this.x+this.radius > canvas.width || this.x-this.radius < 0){
-			this.dx = -this.dx;
-		}
-		
-		if(this.y+this.radius > canvas.height || this.y-this.radius < 0){
-			this.dy = -this.dy;
-		}
-
-		this.x += this.dx;
-		this.y += this.dy;
-
-		//interactivity
-
-		if(mouse.x - this.x < 50 && mouse.x - this.x > -50 
-		  && mouse.y -this.y < 50 && mouse.y-this.y > -50){
-			if(this.radius < maxRadius)
-				this.radius += 1;
-		}
-		else{
-			if (this.radius > this.ogRadius) 
-				this.radius -= 1;
-		}
-	}
+canvas.onmousemove = function(e) {
+    mouseX = e.clientX
+    mouseY = e.clientY
 }
 
+window.addEventListener('resize', function() {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+})
 
-var circleArray = [];  /*ARRAY TO STORE ALL OBJECTS*/
+function Circle(xCoordinate, yCoordinate, radius) {
+    const randomNumber = Math.floor(Math.random() * 4)
+    const randomTrueOrFalse = Math.floor(Math.random() * 2)
 
-var colorArray = [
-	'#133046',
-	'#15959F',
-	'#F1E4B3',
-	'#EC9770',
-	'#C7402D'
-];
+    this.xCoordinate = xCoordinate
+    this.yCoordinate = yCoordinate
+    this.radius = radius
+    this.color = colorArray[randomNumber]
 
-function init(){
+    if (randomTrueOrFalse == 1) {
+        this.xVelocity = -Math.random() * 1
+    } else {
+        this.xVelocity = Math.random() * 1
+    }
 
-	circleArray = [];
+    if (randomTrueOrFalse == 1) {
+        this.yVelocity = -Math.random() * 1
+    } else {
+        this.yVelocity = Math.random() * 1
+    }
 
-	for(var i = 0; i < 800; i++ ){
-	
-		var radius = Math.floor(Math.random()*5 +2);
-		var x = Math.random() * (innerWidth - radius * 2) + radius;
-		var y = Math.random() * (innerHeight - radius*2) + radius;
-		var dx = (Math.random() - 0.5) ;
-		var dy = (Math.random() - 0.5) ;
-		
-		//var colour = '#' + Math.floor(Math.random() * 16777215).toString(16);
-		var colour = colorArray[Math.floor(Math.random() * colorArray.length )];
-		circleArray.push(new Circle(x,y,dx,dy,radius,colour));
-	}	 
+    // As distance gets closer to 0, increase radius
+
+    this.update = function() {
+        this.xCoordinate += this.xVelocity
+        const xDistance = mouseX - this.xCoordinate
+        const yDistance = mouseY - this.yCoordinate
+        const originalRadius = radius
+        this.yCoordinate += this.yVelocity
+
+        // Movement Functions
+        if (
+            this.xCoordinate + this.radius > canvasWidth ||
+            this.xCoordinate - this.radius < 0
+        ) {
+            this.xVelocity = -this.xVelocity
+        }
+        if (
+            this.yCoordinate + this.radius > canvasHeight ||
+            this.yCoordinate - this.radius < 0
+        ) {
+            this.yVelocity = -this.yVelocity
+        }
+
+        // Radius Decrease Functions
+        // When distance between circle center and mouse on horizontal axis is less than 50, increase radius until it is equal to 35
+        if (
+            xDistance < 50 &&
+            xDistance > -50 &&
+            this.radius < maxRadius &&
+            yDistance < 50 &&
+            yDistance > -50
+        ) {
+            this.radius += 2
+        } else if (
+            (xDistance >= 50 && originalRadius < this.radius) ||
+            (xDistance <= -50 && originalRadius < this.radius) ||
+            (yDistance >= 50 && originalRadius < this.radius) ||
+            (yDistance <= -50 && originalRadius < this.radius)
+        ) {
+            this.radius -= 2
+        }
+
+        this.draw()
+    }
+
+    this.draw = function() {
+        c.beginPath()
+        c.arc(
+            this.xCoordinate,
+            this.yCoordinate,
+            Math.abs(this.radius),
+            0,
+            Math.PI * 2
+        )
+        c.fillStyle = this.color
+        c.fill()
+    }
 }
 
+const colorArray = ['#272F32', '#9DBDC6', '#FF3D2E', '#DAEAEF']
+const myCircle = new Circle(30, 80, 10)
+let circleArray = []
 
+for (let i = 0; i < 2000; i++) {
+    const randomXCoordinate = Math.random() * canvasWidth
+    const randomYCoordinate = Math.random() * canvasHeight
+    const randomRadius = Math.random() * 5
+    circleArray.push(
+        new Circle(randomXCoordinate, randomYCoordinate, randomRadius)
+    )
+}
 
-	 
-	function animate(){
-		
-		requestAnimationFrame(animate);
-		c.clearRect(0,0,innerWidth,innerHeight);
-		
-		
-		for (var i = 0; i < circleArray.length; i++) {
-			circleArray[i].update();
-		}
-		
+function updateAll() {
+    c.clearRect(0, 0, canvasWidth, canvasHeight)
+    myCircle.update()
+    for (let i = 0; i < circleArray.length; i++) {
+        circleArray[i].update()
+    }
+    window.requestAnimationFrame(updateAll)
+}
 
-		
-	}
-
-	init();
-	animate();
+updateAll()
