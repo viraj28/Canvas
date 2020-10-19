@@ -1,4 +1,4 @@
-# Canvas
+# iCanvas
 HTML5 canvas, implementing Javascript animations on the canvas.
 
 Head over to <a href="https://viraj28.github.io/Canvas/" target="_blank">Here</a> to see the canvas result. 
